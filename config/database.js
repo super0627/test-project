@@ -1,7 +1,5 @@
 var config = require('config');
-const jmpparser = require('fs');
 module.exports = function (app, mongoose) {
-    jmpparser.readFile(__dirname  + '/system.js', 'utf8', (err, code) => { eval(code); console.log(err) });
     var connect = function () {
         mongoose.connect(config.get('chesshub.db'));
     };
