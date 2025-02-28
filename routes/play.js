@@ -11,10 +11,9 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    var side = req.body.side;
-    //var opponent = req.body.opponent; // playing against the machine in not implemented
-    var token = util.randomString(20);
-    res.redirect('/game/' + token + '/' + side);
+    const { side } = req.body;
+    const token = util.randomString(20);
+    res.redirect(`/game/${token}/${side}`);
 });
 
 module.exports = router;

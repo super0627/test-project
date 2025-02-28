@@ -2,46 +2,51 @@ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 
-/* display game. */
-router.get('/game/:id', function(req, res) {
-    var id = req.params.id;
-    mongoose.model('Game').findById(id, function(err, game) {
-        if(err) {
-            res.status(500).end();
+// Utility function to handle errors
+const handleError = (res, err, statusCode = 500) => {
+    console.error(err);
+    res.status(statusCode).send({ error: err.message });
+};
+
+/* Display game by ID */
+router.get('/game/:id', async (req, res) => {
+    try {
+        const game = await mongoose.model('Game').findById(req.params.id);
+        if (!game) {
+            return res.status(404).send({ error: 'Game not found' });
         }
-        if (game == null){
-            res.status(404).end();
-        } else {
-            res.send(game);
-        }
-    });
+        res.send(game);
+    } catch (err) {
+        handleError(res, err);
+    }
 });
 
-/* display user. */
-router.get('/user/:name', function(req, res) {
-    var name = req.params.name;
-    mongoose.model('User').findOne({name: name}, function(err, user) {
-        if(err) {
-            res.status(500).end();
+/* Display user by name */
+router.get('/user/:name', async (req, res) => {
+    try {
+        const user = await mongoose.model('User').findOne({ name: req.params.name });
+        if (!user) {
+            return res.status(404).send({ error: 'User not found' });
         }
-        if (user == null){
-            res.status(404).end();
-        } else {
-            res.send(user);
-        }
-    });
+        res.send(user);
+    } catch (err) {
+        handleError(res, err);
+    }
 });
 
+/* Get all ranks */
 router.post('/rankAll', async (req, res) => {
-    var RankModel = mongoose.model('Rank');
-    const rankData = await RankModel.find().exec();
-
-    return res.status(200).send({ rankData });
+    try {
+        const rankData = await mongoose.model('Rank').find().exec();
+        res.status(200).send({ rankData });
+    } catch (err) {
+        handleError(res, err);
+    }
 });
 
-/* api status, for monitor */
-router.get('/', function(req, res) {
-    res.status(200).end();
+/* API status endpoint for monitoring */
+router.get('/', (req, res) => {
+    res.status(200).send({ status: 'OK' });
 });
 
 module.exports = router;
