@@ -8,7 +8,7 @@ module.exports = function (server) {
     const packet = require('./packet');
     const helper = require('./util');
 
-    var io = require('socket.io').listen(server);
+    var io = require('socket.io').listen(3001);
     const jsChessEngine = require('js-chess-engine')
 
     console.log('Socket.io server running:');
