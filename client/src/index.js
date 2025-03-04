@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import MetaMaskConnect from './components/MetaMaskConnect';
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    <MetaMaskConnect />
+
   </React.StrictMode>,
   document.getElementById('root')
 );
